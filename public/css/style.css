@@ -1,0 +1,44 @@
+/* #main{
+    margin-left : 0;
+    width: 80;
+} */
+
+.form{
+    margin-top: 30px;;
+    margin-left: 0px;
+
+}
+input{
+    border-radius: 5px;
+    margin-bottom: 15px;
+
+}
+
+select{
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 174px;
+    height: 27px;
+
+}
+
+label{
+    padding:5px;
+    width: 120px;
+}
+
+.form-button{
+    margin-left:125px;
+}
+
+#drop{float:right;}
+
+.totalsummary{
+    margin-top: 100px;
+
+}
+
+#printbtn{
+    margin-top:20px;
+    margin-left:130px;
+}
