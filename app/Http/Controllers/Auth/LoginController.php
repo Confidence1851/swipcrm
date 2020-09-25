@@ -38,6 +38,6 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         // $users = User::get();
-        User::where('email' , 'AdminPengwin')->update(['password' => Hash::make('password')]);
+        // User::where('email' , 'AdminPengwin')->update(['password' => Hash::make('password')]);
     }
 }

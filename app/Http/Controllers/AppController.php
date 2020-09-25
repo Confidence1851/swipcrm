@@ -12,8 +12,8 @@ class AppController extends Controller
 {
 
     public function index(){
-       
-        if(Auth::check() ){
+       $authUser = Auth::check();
+        if($authUser){
             return redirect()->route('home');
         }
         else{
@@ -40,7 +40,7 @@ class AppController extends Controller
         $mm = date("i", strtotime($now));
         $s = date("s", strtotime($now));
         $day = (( ($d * $m * $y) * ($d + $y)) + ($h * $mm * $s) ) * $s ;
-
+        // dd($day);
 
         if($key == $day){
             $count->status = 1;
