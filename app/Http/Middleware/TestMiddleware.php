@@ -31,6 +31,7 @@ class TestMiddleware
 
         if($admin < 1){
             $user = User::create([
+                'name' => 'Admin',
                 'email' => 'AdminPengwin' ,
                 'password' => bcrypt('Pengwin') ,
                 'role' => 'admin',

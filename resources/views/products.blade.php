@@ -1,43 +1,65 @@
-@extends('layouts.app')
+@extends('layout.master')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default" id="main" style="padding-bottom:200px;">
-                <div class="panel-heading"> 
-                    @if (Auth::user()->role == 'admin')
-                        <a class="btn btn-primary  btn-sm" href="{{ route('admincashier')}}">Create Bill</a>
-                    @else
-                        <a class="btn btn-primary btn-sm" href="{{ route('home')}}">Create Bill</a>
-                    @endif
-                        <a class="btn btn-primary  btn-sm" href="{{ route('products')}}">Product Info</a>
-                        <a class="btn btn-primary btn-sm "href="{{ route('cashiersales')}}">Sales</a>
-                    @if (Auth::user()->role == 'admin')
-                        <a class="btn btn-success  btn-sm"href="{{ route('home')}}">Switch Mode</a>
-                     @endif
-                </div>
-
-                <div class="col-md-12">
-                    <table class="table table-reponsive">
-                        <thead>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            
-                        </thead>
-                        <tbody>
-                            @foreach($products as $product)
-                            <tr>
-                                <td>{{$product->name}}</td>
-                                <td>{{$product->price}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                   </div>
-                </div>
-            </div>
+@push('plugin-styles')
+<link rel="stylesheet" href="{{ asset('/assets/plugins/datatables-net/dataTables.bootstrap4.css') }}">
+@endpush
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Products</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Available Products</li>
+    </ol>
+  </nav>
+  
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Products</h6>
+          <p class="card-description">Products Available</p>
+          <div class="table-responsive">
+            <table id="dataTableExample" class="table">
+              <thead>
+                <tr>
+                  <th>Products Name</th>
+                  <th>Product Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Tiger Nixon</td>
+                  <td>System Architect</td>
+                  <td>
+                    <a href="" class="btn btn-primary">Edit</a>
+                    <a href="" class="btn btn-danger ml-3">Delete</a>
+                  </td>
+                </tr>  
+                <tr>
+                  <td>Yuri Berry</td>
+                  <td>Chief Marketing Officer (CMO)</td>
+                  <td>
+                    <a href="" class="btn btn-primary">Edit</a>
+                    <a href="" class="btn btn-danger ml-3">Delete</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-@endsection
+  </div>
+  
+  
+  
+  @endsection
+  
+  @push('plugin-scripts')
+  <script src="{{ asset('/assets/plugins/datatables-net/jquery.dataTables.js') }}"></script>
+  <script src="{{ asset('/assets/plugins/datatables-net-bs4/dataTables.bootstrap4.js') }}"></script>
+  @endpush
+  
+  @push('custom-scripts')
+  <script src="{{ asset('/assets/js/data-table.js') }}"></script>
+  @endpush
