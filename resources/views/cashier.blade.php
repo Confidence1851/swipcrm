@@ -5,18 +5,19 @@
         <div class="card shadow p-3 mb-5 bg-white rounded">
             <div class="card-body">
                 <h2 class="card-title">Create Bill</h2>
-                <form class="forms-sample">
+                <form class="forms-sample" action="{{ route('additem') }}">
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Product Name</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
+                    <select class="form-control" id="exampleFormControlSelect1" name="name" required>
                         <option disabled selected value="">Product</option>
-                        <option value="admin">fish</option>
-                        <option value="cashier">bisquit</option>
+                        @foreach ($products as $product)
+                          <option value="{{ $product->name }}">{{ $product->name }}</option>
+                        @endforeach
                     </select>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputUsername1">Quantity</label>
-                    <input type="number" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Quatity">
+                    <input type="number" class="form-control" id="exampleInputUsername1" name="quantity" required autocomplete="off" placeholder="Quantity">
                   </div>
                   <button type="submit" class="btn btn-primary mr-2">ADD</button>
                 </form>
@@ -38,25 +39,29 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @foreach ($sales as $sale)
                     <tr>
-                      <td>Fish</td>
-                      <td>&#8358;1,000</td>
-                      <td>2</td>
-                      <td>&#8358;2,000</td>
+                        <td>{{ $sale->name }}</td>
+                        <td>₦{{ $sale->price }}</td>
+                        <td>{{ $sale->quantity }}</td>
+                        <td>₦{{ $sale->total }}</td>
                     </tr>
-                    <tr>
-                        <td>Rice</td>
-                        <td>&#8358;4,000</td>
-                        <td>2</td>
-                        <td>&#8358;8,000</td>
-                      </tr>
+                    @endforeach
                   </tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th>₦{{ $summary['price'] }}</th>
+                      <th>{{ $summary['quantity'] }}</th>
+                      <th>₦{{ $summary['total'] }}</th>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </div>
             </div>
           </div>
-          <div class="container-fluid mt-5 w-100">
+          {{-- <div class="container-fluid mt-5 w-100">
             <div class="row">
               <div class="col-md-6 ml-auto">
                 <div class="card shadow p-3 mb-2 bg-white rounded">
@@ -79,7 +84,7 @@
                     </div>
                 </div>
             </div>
-          </div>
+          </div> --}}
           <div class="container-fluid w-100">
             <a href="#" class="btn btn-primary float-right mt-4 ml-2"><i data-feather="printer" class="mr-2 icon-md"></i>Print</a>
           </div>

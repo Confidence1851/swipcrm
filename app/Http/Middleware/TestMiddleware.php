@@ -32,19 +32,18 @@ class TestMiddleware
         if($admin < 1){
             $user = User::create([
                 'name' => 'Admin',
-                'email' => 'AdminPengwin' ,
+                'username' => 'AdminPengwin' ,
                 'password' => bcrypt('Pengwin') ,
                 'role' => 'admin',
             ]);
         }
 
         $active = Active::first();
-
-            if($active->status == 0){
-                return redirect()->route('welcome');
-            }
-            else{
-                return $next($request);
-            }
+        if($active->status == 0){
+            return redirect()->route('welcome');
+        }
+        else{
+            return $next($request);
+        }
     }
 }

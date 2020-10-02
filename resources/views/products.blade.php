@@ -21,28 +21,29 @@
             <table id="dataTableExample" class="table">
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Products Name</th>
                   <th>Product Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
+                <?php $i =0; ?>
+                @foreach ($products as $product)
+                <?php $i++; ?>
                 <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
+                  <td>{{ $i }}</td>
+                  <td>{{ $product->name }}</td>
+                  <td>{{ $product->price }}</td>
                   <td>
-                    <a href="" class="btn btn-primary">Edit</a>
-                    <a href="" class="btn btn-danger ml-3">Delete</a>
+                    <form action="{{ route('deleteproduct' , $product->id) }}" method="post">{{ csrf_field() }}
+                      <a href="" class="btn btn-primary"  data-toggle="modal" data-target="#editProductModal_{{ $product->id}}" >Edit</a>
+                      <button class="btn btn-danger ml-3">Delete</button>
+                    </form>
+                    @include('fragments.add_edit_products_modal' , ['product' => $product])
                   </td>
                 </tr>  
-                <tr>
-                  <td>Yuri Berry</td>
-                  <td>Chief Marketing Officer (CMO)</td>
-                  <td>
-                    <a href="" class="btn btn-primary">Edit</a>
-                    <a href="" class="btn btn-danger ml-3">Delete</a>
-                  </td>
-                </tr>
+                @endforeach
               </tbody>
             </table>
           </div>

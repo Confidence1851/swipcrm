@@ -34,10 +34,19 @@ class LoginController extends Controller
      *
      * @return void
      */
+
+    public function username()
+    {
+        return 'username';
+    }
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->middleware('check');
+
         // $users = User::get();
-        // User::where('email' , 'AdminPengwin')->update(['password' => Hash::make('password')]);
+        // dd($users);
+        // User::where('email' , 'AdminPengwin')->update(['username' => 'AdminPengwin','password' => Hash::make('password')]);
     }
 }

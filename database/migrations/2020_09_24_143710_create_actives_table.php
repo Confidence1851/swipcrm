@@ -13,12 +13,14 @@ class CreateActivesTable extends Migration
      */
     public function up()
     {
-        Schema::create('actives', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('status');
-            $table->string('date');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('actives')) {
+            Schema::create('actives', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('status');
+                $table->string('date');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
