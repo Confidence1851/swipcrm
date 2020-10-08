@@ -5,7 +5,7 @@
         <div class="card shadow p-3 mb-5 bg-white rounded">
             <div class="card-body">
                 <h2 class="card-title">Create Bill</h2>
-                <form class="forms-sample" action="{{ route('additem') }}">
+                <form class="forms-sample" method="post" action="{{ route('additem') }}">{{ csrf_field() }}
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Product Name</label>
                     <select class="form-control" id="exampleFormControlSelect1" name="name" required>
@@ -36,6 +36,7 @@
                       <th class="pt-0">Price</th>
                       <th class="pt-0">Quantity</th>
                       <th class="pt-0">Total</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -45,6 +46,11 @@
                         <td>₦{{ $sale->price }}</td>
                         <td>{{ $sale->quantity }}</td>
                         <td>₦{{ $sale->total }}</td>
+                        <td>
+                          <form action="{{ route('deleteitem' , $sale->id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">{{ csrf_field() }}
+                            <button class="btn btn-danger btn-xs"><i data-feather="trash"></i></button>
+                          </form>
+                        </td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -86,7 +92,7 @@
             </div>
           </div> --}}
           <div class="container-fluid w-100">
-            <a href="#" class="btn btn-primary float-right mt-4 ml-2"><i data-feather="printer" class="mr-2 icon-md"></i>Print</a>
+            <a href="{{ route('savesaledetails') }}" class="btn btn-primary float-right mt-4 ml-2"><i data-feather="printer" class="mr-2 icon-md"></i>Save and Print</a>
           </div>
       </div>
   </div>

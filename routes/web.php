@@ -39,7 +39,7 @@ Route::get('/cashierpage', 'HomeController@cashierpage')->name('cashierpage')->m
 Route::post('/add-item', 'HomeController@additem')->name('additem')->middleware('check');
 Route::get('/edit-item/{id}', 'HomeController@edititem')->name('edititem')->middleware('check');
 Route::post('/save-item/{id}', 'HomeController@updateitem')->name('updateitem')->middleware('check');
-Route::get('/delete-item/{id}', 'HomeController@deleteitem')->name('deleteitem')->middleware('check');
+Route::post('/delete-item/{id}', 'HomeController@deleteitem')->name('deleteitem')->middleware('check');
 
 Route::get('/products', 'HomeController@products')->name('products')->middleware('check');
 

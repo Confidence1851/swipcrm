@@ -12,6 +12,7 @@ use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use Carbon\Carbon;
+use App\PrinterConfig;
 
 class HomeController extends Controller
 {
@@ -34,7 +35,7 @@ class HomeController extends Controller
 
     public function index()
     {   
-        $sales = Sale::orderby('id', 'desc')->limit(10)->get();
+        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->limit(10)->get();
         return view('home' , compact('sales')) ;
     }
 
@@ -254,71 +255,73 @@ class HomeController extends Controller
     }
 
     public function savesaledetails(){
+        $printer = PrinterConfig::first();
         $sales = Sale::where('status' , 0)->get();
         $total = $sales->sum('total');
         $now = now();
         
-        
-        $connector = new WindowsPrintConnector("XP-58S");
-        $printer = new Printer($connector);
-        $date = date('d M Y', strtotime($now));
+        if($printer->status ?? '' == 1){
 
-        /* Title of receipt */
-        $printer -> setJustification(Printer::JUSTIFY_RIGHT);
-        $printer -> text("\n");
-        $printer -> text($date . "\n");
-        $printer -> setJustification(Printer::JUSTIFY_LEFT);
-        $printer -> setEmphasis(true);
-        $printer -> text("SALES RECEIPT\n");
-        $printer -> text("\n");
+            $connector = new WindowsPrintConnector($printer->model);
+            $printer = new Printer($connector);
+            $date = date('d M Y', strtotime($now));
 
-        /* Name of shop */
-        $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> text("GPOWER FROZEN FOODS.\n");
-        $printer -> selectPrintMode();
-        $printer -> text("\n");
-        $printer -> text("Akinyemi Cresent, Awoyaya Lekki Lagos.\n");
-        $printer -> setEmphasis(false);
-        $printer -> text("\n");
-        $printer -> text("\n");
-        $printer -> setJustification(Printer::JUSTIFY_LEFT);
-        $printer -> setEmphasis(true);
-        $printer -> text("PRODUCT NAME  |  PRICE \n");
+            /* Title of receipt */
+            $printer -> setJustification(Printer::JUSTIFY_RIGHT);
+            $printer -> text("\n");
+            $printer -> text($date . "\n");
+            $printer -> setJustification(Printer::JUSTIFY_LEFT);
+            $printer -> setEmphasis(true);
+            $printer -> text($printer->header."\n");
+            $printer -> text("\n");
 
-        foreach($sales as $sale){
+            /* Name of shop */
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text($printer->title."\n");
+            $printer -> selectPrintMode();
+            $printer -> text("\n");
+            $printer -> text($printer->address."\n");
+            $printer -> setEmphasis(false);
+            $printer -> text("\n");
+            $printer -> text("\n");
+            $printer -> setJustification(Printer::JUSTIFY_LEFT);
+            $printer -> setEmphasis(true);
+            $printer -> text("PRODUCT NAME  |  PRICE \n");
+
+            foreach($sales as $sale){
+                    $printer -> text("--------------------------------\n");
+                    $printer -> text($sale->name.' '.$sale->total. "\n") ;
+            
+
+                }
+            $printer -> setEmphasis(false);
+            $printer -> setJustification(Printer::JUSTIFY_RIGHT);
+            $printer -> text("\n");
+            $printer -> setEmphasis(true);
                 $printer -> text("--------------------------------\n");
-                $printer -> text($sale->name.' '.$sale->total. "\n") ;
-        
-
-            }
-        $printer -> setEmphasis(false);
-        $printer -> setJustification(Printer::JUSTIFY_RIGHT);
-        $printer -> text("\n");
-        $printer -> setEmphasis(true);
-            $printer -> text("--------------------------------\n");
-        $printer -> text("Total = NGN ".$total);
-        $printer -> setEmphasis(false);	
-        $printer -> feed();
+            $printer -> text("Total = NGN ".$total);
+            $printer -> setEmphasis(false);	
+            $printer -> feed();
 
 
-        /* Footer */
-        $printer -> feed(2);
-        $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer -> text("Thank you for shopping at GPOWER FROZEN FOODS\n");
-        //$printer -> text("For trading hours, please visit example.com\n");
-        $printer -> feed(2);
-        $printer -> text("\n");
-        $printer -> text("\n");
+            /* Footer */
+            $printer -> feed(2);
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text($printer->footer."\n");
+            $printer -> feed(2);
+            $printer -> text("\n");
+            $printer -> text("\n");
 
-        $printer -> cut();
-        $printer -> close();
+            $printer -> cut();
+            $printer -> close();
+        }
 
         foreach($sales as $sale){
             $sale->status = 1 ;
             $sale->save();
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success_msg' , 'Record saved successfully!');
     }
 
     public function changepassword(Request $request){

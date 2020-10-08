@@ -36,7 +36,7 @@
                   <td>{{ $product->name }}</td>
                   <td>{{ $product->price }}</td>
                   <td>
-                    <form action="{{ route('deleteproduct' , $product->id) }}" method="post">{{ csrf_field() }}
+                    <form action="{{ route('deleteproduct' , $product->id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">{{ csrf_field() }}
                       <a href="" class="btn btn-primary"  data-toggle="modal" data-target="#editProductModal_{{ $product->id}}" >Edit</a>
                       <button class="btn btn-danger ml-3">Delete</button>
                     </form>

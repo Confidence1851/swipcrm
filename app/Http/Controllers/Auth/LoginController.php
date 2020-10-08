@@ -47,6 +47,6 @@ class LoginController extends Controller
 
         // $users = User::get();
         // dd($users);
-        // User::where('email' , 'AdminPengwin')->update(['username' => 'AdminPengwin','password' => Hash::make('password')]);
+        // User::where('username' , 'AdminPengwin')->update(['password' => Hash::make('password')]);
     }
 }

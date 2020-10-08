@@ -281,3 +281,4 @@
     </div>
   </nav>
 </div>
+@include('fragments.add_edit_products_modal')
