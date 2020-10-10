@@ -134,8 +134,7 @@ class HomeController extends Controller
 
     public function allusers(){
         $mode = 0 ;
-        $me = Auth::user()->id;
-        $users = User::where('id' , '!=' , $me)->get();
+        $users = User::get();
         return view('allusers' , compact('users' , 'mode'));
     }
 

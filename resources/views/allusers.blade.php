@@ -5,10 +5,10 @@
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card shadow p-3 mb-2 bg-white rounded">
                   <div class="card-body">
-                    <h6 class="card-title">{{ empty($user) ? 'Add New Cashier' : 'Edit Cashier' }}</h6>
+                    <h6 class="card-title">{{ empty($user) ? 'Add New User' : 'Edit User' }}</h6>
                     <form class="forms-sample" method="POST" action="{{ empty($user) ? route('adduser') : route('updateuser' , $user->id) }}"> {{ csrf_field() }}
                       <div class="form-group">
-                        <label for="exampleInputUsername1">Cashhier Name</label>
+                        <label for="exampleInputUsername1">User Full Name</label>
                         <input type="text" class="form-control" id="exampleInputUsername1" name="name" autocomplete="off" required value="{{ $user->name ?? '' }}" placeholder="Cashier Name">
                       </div>
                       <div class="form-group">
@@ -54,7 +54,7 @@
                         <thead>
                           <tr>
                             <th class="pt-0">#</th>
-                            <th class="pt-0">Casier Name</th>
+                            <th class="pt-0">User Name</th>
                             <th class="pt-0">UserName</th>
                             <th class="pt-0">Start Date</th>
                             <th class="pt-0">Role</th>
@@ -70,13 +70,20 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ date('Y/m/d' , strtotime($user->created_at)) }}</td>
-                            <td><span class="badge badge-success">{{ $user->role }}</span></td>
+                            <td><span class="badge badge-success p-2">{{ ucfirst($user->role) }}</span></td>
+                            @if ($user->id == auth()->id())
+                            <td>
+                                <a href="{{ route('edituser', $user->id) }}" class="btn btn-primary">Update Profile</a>
+                            </td>
+                            @else
                             <td>
                               <form action="{{ route('deleteuser' , $user->id) }}" method="post">{{ csrf_field() }}
                                 <a href="{{ route('edituser', $user->id) }}" class="btn btn-primary">Edit</a>
                                 <button class="btn btn-danger ml-3">Delete</button>
                               </form>
                             </td>
+                            @endif
+
                           </tr>
                           @endforeach
                         </tbody>
