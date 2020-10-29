@@ -69,8 +69,8 @@
                             <td>26/04/2019</td>
                             <td><span class="badge badge-success">Cashier</span></td>
                             <td>
-                              <a href="" class="btn btn-primary">Edit</a>
-                              <a href="" class="btn btn-danger ml-3">Delete</a>
+                              <a href="" class="btn btn-primary btn-sm">Edit</a>
+                              <a href="" class="btn btn-danger ml-3 btn-sm">Delete</a>
                             </td>
                           </tr>
                         </tbody>

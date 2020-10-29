@@ -33,7 +33,7 @@
                   <td>System Architect</td>
                   <td>Edinburgh</td>
                   <td>61</td>
-                  <td><a href="" class="btn btn-danger">Delete</a></td>
+                  <td><a href="" class="btn btn-danger btn-sm">Delete</a></td>
                 </tr>
               </tbody>
             </table>
