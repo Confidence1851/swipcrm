@@ -33,10 +33,22 @@ class HomeController extends Controller
      */
 
 
-    public function index()
+    public function index(Request $request)
     {   
-        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->limit(10)->get();
-        return view('home' , compact('sales')) ;
+        $from = $request->from ??  now()->addDays(-1);
+        $to = $request->to ?? now();
+        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->whereBetween('created_at' ,[$from , $to])->paginate(10);
+        $summary['price'] = 0;
+	    $summary['quantity'] = 0;
+        $summary['total'] = 0;
+        foreach($sales as $sale){
+            $summary['price']+= $sale->price;
+            $summary['quantity']+= $sale->quantity;
+            $summary['total']+= $sale->total;
+        }
+        $from = date('Y-m-d', strtotime($from));
+        $to = date('Y-m-d', strtotime($to));
+        return view('home' , compact('sales' , 'summary' , 'from' , 'to'));
     }
 
    
@@ -193,23 +205,7 @@ class HomeController extends Controller
         return redirect()->back()->with('success_msg' , 'Cashier deleted successfully!');
     }
 
-    public function salesummary(){
-        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->paginate(100);
-	    $summary['price'] = 0;
-	    $summary['quantity'] = 0;
-        $summary['total'] = 0;
-        foreach($sales as $sale){
-            $summary['price']+= $sale->price;
-            $summary['quantity']+= $sale->quantity;
-            $summary['total']+= $sale->total;
-        }
-
-        return view('salessummary' , compact('sales' , 'summary'));
-    }
-
-    
-    public function filtersalesummary(Request $request){
-        // dd($request->all());
+    public function salesummary(Request $request){
         $from = $request->from ??  now()->addDays(-1);
         $to = $request->to ?? now();
         $sales = Sale::where('status' , 1)->orderby('id', 'desc')->whereBetween('created_at' ,[$from , $to])->paginate(100);
@@ -223,12 +219,10 @@ class HomeController extends Controller
         }
         $from = date('Y-m-d', strtotime($from));
         $to = date('Y-m-d', strtotime($to));
-        dump($from);
-        dump($to);
-        // dd($summary);
-        return redirect()->back()->with('sales')->with('summary')->with('from')->with('to');
+        return view('salessummary' , compact('sales' , 'summary' , 'from' , 'to'));
     }
 
+    
     public function deletesalesummaryitem($id){
         $sale = Sale::find($id);
         $delete = $sale->delete();

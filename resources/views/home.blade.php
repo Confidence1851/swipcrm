@@ -12,7 +12,7 @@
   <div>
     <h4 class="mb-3 mb-md-0">Welcome {{ Auth::user()->name }}</h4>
   </div>
-  @include('fragments.sales_date_filter')
+  @include('fragments.sales_date_filter' , ['url' =>  route('home')])
 </div>
 
 <div class="row">

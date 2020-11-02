@@ -1,7 +1,7 @@
 
 
   <div class="d-flex align-items-center flex-wrap text-nowrap">
-    <form action="{{ route('filtersalesummary') }}" method="get">{{ csrf_field() }}
+    <form action="{{$url ?? '' }}" method="get">{{ csrf_field() }}
         <div class="form-row">
             <div class="col-md-5">
                 <div class="input-group date datepicker dashboard-date mr-4 mb-2 mb-md-0 d-md-none d-xl-flex" id="dashboardDate">

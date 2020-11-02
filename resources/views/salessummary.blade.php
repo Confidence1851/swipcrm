@@ -10,11 +10,12 @@
     </ol>
   </nav>
 
+
   <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
     <div>
       <h4 class="mb-3 mb-md-0"></h4>
     </div>
-    @include('fragments.sales_date_filter')
+    @include('fragments.sales_date_filter' , ['url' => route('salesummary')])
   </div>
   
   

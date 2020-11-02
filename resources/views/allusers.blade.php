@@ -25,7 +25,7 @@
                       </div>
                       <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" name="password" autocomplete="off" {{ empty($user) ? 'required' : '' }} placeholder="Password">
+                        <input type="password" class="form-control" id="exampleInputPassword1" value="" name="password" {{ empty($user) ? 'required' : '' }} placeholder="Password">
                       </div>
                       <button type="submit" class="btn btn-primary mr-2">Submit</button>
                       <a href="{{ route('allusers') }}" class="btn btn-light">Cancel</a>

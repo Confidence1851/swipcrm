@@ -5,7 +5,7 @@
         <a href="#" class="navbar-brand">
           Swip<span>CRM</span>
         </a>
-        <form class="search-form">
+        {{-- <form class="search-form">
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">
@@ -14,7 +14,7 @@
             </div>
             <input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
           </div>
-        </form>
+        </form> --}}
         <ul class="navbar-nav">
           <li class="nav-item dropdown nav-apps">
             {{-- <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
