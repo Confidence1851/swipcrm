@@ -36,18 +36,17 @@ class AppController extends Controller
         $d = date("d", strtotime($now));
         $m = date("m", strtotime($now));
         $y = date("Y", strtotime($now));
-        $h = date("h", strtotime($now));
+        $h = date("H", strtotime($now));
         $mm = date("i", strtotime($now));
         $s = date("s", strtotime($now));
         $day = (( ($d * $m * $y) * ($d + $y)) + ($h * $mm * $s) ) * $s ;
-        // dd($day);
-
+       
         if($key == $day){
             $count->status = 1;
             $count->save();
-
             return redirect()->route('login');
         }
+
         return redirect()->back();
 
     }
