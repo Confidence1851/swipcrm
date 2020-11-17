@@ -201,9 +201,9 @@
                   <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link"
                             onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
+                            document.getElementById('logout-form').submit();" style="color:#00bf8f;">
                             <i data-feather="log-out"></i>
-                            <span>Log Out</span>
+                            <span >Log Out</span>
                     </a>
                   
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

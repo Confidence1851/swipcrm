@@ -27,7 +27,7 @@
                         <label for="exampleInputPassword1">Password</label>
                         <input type="password" class="form-control" id="exampleInputPassword1" value="" name="password" {{ empty($user) ? 'required' : '' }} placeholder="Password">
                       </div>
-                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                      <button type="submit" class="btn btn-success mr-2">Submit</button>
                       <a href="{{ route('allusers') }}" class="btn btn-light">Cancel</a>
                     </form>
                   </div>
@@ -73,7 +73,7 @@
                             <td><span class="badge badge-success p-2">{{ ucfirst($user->role) }}</span></td>
                             @if ($user->id == auth()->id())
                             <td>
-                                <a href="{{ route('edituser', $user->id) }}" class="btn btn-primary">Update Profile</a>
+                                <a href="{{ route('edituser', $user->id) }}" class="btn btn-success">Update Profile</a>
                             </td>
                             @else
                             <td>

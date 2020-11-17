@@ -19,7 +19,7 @@
                     <label for="exampleInputUsername1">Quantity</label>
                     <input type="number" class="form-control" id="exampleInputUsername1" name="quantity" required autocomplete="off" placeholder="Quantity">
                   </div>
-                  <button type="submit" class="btn btn-primary mr-2">ADD</button>
+                  <button type="submit" class="btn btn-success mr-2">ADD</button>
                 </form>
             </div>
         </div>

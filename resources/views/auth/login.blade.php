@@ -42,7 +42,7 @@
                   </label>
                 </div>
                 <div class="mt-3">
-                    <button type="submit" class="btn btn-primary mr-2 mb-2 mb-md-0">
+                    <button type="submit" class="btn btn-success mr-2 mb-2 mb-md-0">
                         {{ __('Login') }}
                     </button>
                 </div>

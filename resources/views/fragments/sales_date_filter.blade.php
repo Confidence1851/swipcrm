@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary">GO</button>
+                <button class="btn btn-success">GO</button>
             </div>
         </div>
     </form>
