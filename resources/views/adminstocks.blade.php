@@ -29,7 +29,7 @@
                                 <input type="number" name="price" id="price">
                             </div>
                             <div class="form-button">
-                                 <button class="btn btn-primary" type="submit">Save</button>
+                                 <button class="btn btn-success" type="submit">Save</button>
                             </div>
                         </form>
                     </div>

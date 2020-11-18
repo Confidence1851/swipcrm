@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        view()->composer('*', function ($view) {
+            $view->with([
+                "append_asset" => env("ASSET_URL"),
+            ]);
+        });
     }
 }

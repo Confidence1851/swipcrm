@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,8 +12,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('public/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset($append_asset.'/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset($append_asset.'/css/style.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -105,6 +106,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="{{ asset('public/js/app.js') }}"></script>
+    <script src="{{ asset($append_asset.'/js/app.js') }}"></script>
 </body>
 </html>

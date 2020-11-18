@@ -12,6 +12,7 @@ use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use Carbon\Carbon;
+use App\PrinterConfig;
 
 class HomeController extends Controller
 {
@@ -32,52 +33,47 @@ class HomeController extends Controller
      */
 
 
-    public function index()
+    public function index(Request $request)
     {   
-        $user = Auth::user();
-        if($user->role == 'admin'){
-        $mode = 0;
-        $products = Product::orderby('name' , 'asc')->get();
-        return view('home' , compact('products' , 'mode'));
+        $from = $request->from ??  now()->addDays(-1);
+        $to = $request->to ?? now();
+        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->whereBetween('created_at' ,[$from , $to])->paginate(10);
+        $summary['price'] = 0;
+	    $summary['quantity'] = 0;
+        $summary['total'] = 0;
+        foreach($sales as $sale){
+            $summary['price']+= $sale->price;
+            $summary['quantity']+= $sale->quantity;
+            $summary['total']+= $sale->total;
         }
-        elseif($user->role == 'cashier'){
-
-            $mode = 0;
-            $sales = Sale::where('status' , 0)->orderby('id', 'desc')->get();
-            $products = Product::orderby('name', 'asc')->get();
-
-            return view('cashier' , compact('sales' , 'products', 'mode')) ;
-        }
-
+        $from = date('Y-m-d', strtotime($from));
+        $to = date('Y-m-d', strtotime($to));
+        return view('home' , compact('sales' , 'summary' , 'from' , 'to'));
     }
 
    
 
  public function additem(Request $request){
-    $mode = 0;
     $user = Auth::User();
     $item = Product::where('name' , $request->input('name'))->first();
-    $count = Sale::where('name' , $item->name)->where('status' , 0)->count();
     $quantity = $request->input('quantity');
     if(empty($quantity)){
         $quantity = 1 ;
     }
     else{
-    $quantity = $quantity ;
+        $quantity = $quantity ;
     }
 
         if( $quantity > 0){
-            $newsale = Sale::create([
-                'username' => $user->email ,
+            Sale::create([
+                'username' => $user->id ,
                 'name' => $item->name,
                 'price' => $item->price,
                 'quantity' => $quantity ,
                 'total' => $item->price * $quantity ,
                 'status' => 0 ,
             ]);
-
-
-        return redirect()->back()->with('mode');    
+        return redirect()->back()->with('mode')->with('success_msg' , 'Item added to list successfully!');    
         }
     }
 
@@ -103,7 +99,7 @@ class HomeController extends Controller
         elseif($quantity == 0) {
             $sameitem->delete();
         }
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success_msg' , 'Sale updated successfully!');
       }
 
     
@@ -115,17 +111,12 @@ class HomeController extends Controller
 
       }
     public function addproduct(Request $request){
-        request()->validate([
+        $data = $request->validate([
             'name' => 'required|unique:products|string' ,
             'price' => 'required'
         ]);
-        $product = Product::create([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-        ]);
-        $mode = 0 ;
-        $products = Product::orderby('name' , 'asc')->get();
-        return redirect()->back()->with('products', 'mode');
+        Product::create($data);
+        return redirect()->route('products')->with('success_msg' , 'Product added successfully!');
     }
 
     public function editproduct($id)
@@ -138,113 +129,100 @@ class HomeController extends Controller
 
     public function updateproduct(Request $request , $id){
         $product = Product::find($id);
-        request()->validate([
+        $data = request()->validate([
+            'name' => 'required' ,
             'price' => 'required' ,
         ]);
-
-        $product->price = $request->input('price');
-        $product->save();
-
-        $mode = 0;
-        $products = Product::orderby('name' , 'asc')->get();
-        return redirect()->route('home');
+        $product->update($data);
+        return redirect()->back()->with('success_msg' , 'Product updated successfully!');
     }
 
     public function deleteproduct($id){
         $find = Product::find($id);
         $find->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('success_msg' , 'Product deleted successfully!');
     }
 
     public function allusers(){
         $mode = 0 ;
-        $me = Auth::user()->id;
-        $users = User::where('id' , '!=' , $me)->get();
+        $users = User::get();
         return view('allusers' , compact('users' , 'mode'));
     }
 
      
     public function adduser(Request $request){
-        request()->validate([
-            'email' => 'required|unique:users|string' ,
+        $data = request()->validate([
+            'username' => 'required|unique:users,username|string' ,
+            'name' => 'required',
             'role' => 'required',
             'password' => 'required'
         ]);
-        $user = user::create([
-            'email' => $request->input('email'),
-            'role' => $request->input('role'),
-            'password' => bcrypt($request->input('password')),
-        ]);
-        $mode = 0 ;
+        
+        $data['password'] =  bcrypt($request->input('password'));
+        $user = user::create($data);
         $me = Auth::user()->id;
         $users = User::where('id' , '!=' , $me)->get();
-        return redirect()->back()->with('users', 'mode');
+        return redirect()->back()->with('users')->with('success_msg' , 'Cashier added successfully!');
     }
 
 
     public function edituser($id)
-    {   $mode = 1;
+    {   
         $user = user::where('id' , $id)->first();
         $me = Auth::user()->id;
         $users = User::where('id' , '!=' , $me)->get();
-        return view('allusers' , compact('users' , 'mode' , 'user'));
+        return view('allusers' , compact('users' , 'user'));
     }
 
     public function updateuser(Request $request , $id){
         $user = user::find($id);
-        $inputname =  $request->input('email');
-        if ($inputname == $user->email){
+        $inputname =  $request->input('username');
+        if ($inputname == $user->username){
             $valname = 'required' ;
         }
         else{
-            $valname = 'required|unique:users|string' ;
+            $valname = 'required|unique:users,username|string' ;
         }
 
         request()->validate([
-            'email' => $valname ,
+            'username' => $valname ,
             'role' => 'required' ,
-            'password' => 'required' ,
+            'name' => 'required' ,
+            'password' => 'nullable' ,
         ]);
 
-        $user->email = $inputname ;
+        $user->username = $inputname ;
+        $user->name = $request->name ;
         $user->role = $request->input('role');
         $user->password = bcrypt($request->input('password'));
         $user->save();
-
-        $mode = 0;
-        $me = Auth::user()->id;
-        $users = User::where('id' , '!=' , $me)->get();
-        return redirect()->route('allusers');
+        return redirect()->route('allusers')->with('success_msg' , 'Cashier updated successfully!');
     }
 
     public function deleteuser($id){
-        $find = user::find($id);
-        $find->delete();
-
-        return redirect()->back();
+        $find = user::find($id)->delete();
+        return redirect()->back()->with('success_msg' , 'Cashier deleted successfully!');
     }
 
-    public function salesummary(){
-        $mode = 0;
-        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->get();
-	    $total = Sale::where('status' , 1)->sum('total');
-
-        return view('salessummary' , compact('sales' , 'total' , 'mode'));
+    public function salesummary(Request $request){
+        $from = $request->from ??  now()->addDays(-1);
+        $to = $request->to ?? now();
+        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->whereBetween('created_at' ,[$from , $to])->paginate(100);
+        $summary['price'] = 0;
+	    $summary['quantity'] = 0;
+        $summary['total'] = 0;
+        foreach($sales as $sale){
+            $summary['price']+= $sale->price;
+            $summary['quantity']+= $sale->quantity;
+            $summary['total']+= $sale->total;
+        }
+        $from = date('Y-m-d', strtotime($from));
+        $to = date('Y-m-d', strtotime($to));
+        return view('salessummary' , compact('sales' , 'summary' , 'from' , 'to'));
     }
 
     
-    public function filtersalesummary(Request $request){
-        $mode = 1;
-        $from = $request->input('start');
-        $to = $request->input('to');
-        $new = Carbon::parse($to);
-        $end = $new->addDay(1);
-        $sales = Sale::where('status' , 1)->orderby('id', 'desc')->where('created_at' , '>=' , $from)->where('created_at' , '<=' , $end)->get();
-	    $total = Sale::where('status' , 1)->where('created_at' , '>=' , $from)->where('created_at' , '<=' , $end)->sum('total');
-        return view('salessummary' , compact('sales' , 'total' , 'mode'));
-    }
-
     public function deletesalesummaryitem($id){
         $sale = Sale::find($id);
         $delete = $sale->delete();
@@ -270,71 +248,73 @@ class HomeController extends Controller
     }
 
     public function savesaledetails(){
+        $printer = PrinterConfig::first();
         $sales = Sale::where('status' , 0)->get();
-	$total = Sale::where('status' , 0)->sum('total');
-	$now = new Carbon;
-       
-	
-    $connector = new WindowsPrintConnector("XP-58S");
-    $printer = new Printer($connector);
-	$date = date('d M Y', strtotime($now));
+        $total = $sales->sum('total');
+        $now = now();
+        
+        if($printer->status ?? '' == 1){
 
-	 /* Title of receipt */
-	 $printer -> setJustification(Printer::JUSTIFY_RIGHT);
-	 $printer -> text("\n");
-	 $printer -> text($date . "\n");
-	 $printer -> setJustification(Printer::JUSTIFY_LEFT);
-	 $printer -> setEmphasis(true);
-	 $printer -> text("SALES RECEIPT\n");
-	 $printer -> text("\n");
+            $connector = new WindowsPrintConnector($printer->model);
+            $printer = new Printer($connector);
+            $date = date('d M Y', strtotime($now));
 
-	 /* Name of shop */
-	 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-	 $printer -> text("GPOWER FROZEN FOODS.\n");
-	 $printer -> selectPrintMode();
-	 $printer -> text("\n");
-	 $printer -> text("Akinyemi Cresent, Awoyaya Lekki Lagos.\n");
-	 $printer -> setEmphasis(false);
-	 $printer -> text("\n");
-	 $printer -> text("\n");
-	 $printer -> setJustification(Printer::JUSTIFY_LEFT);
-	 $printer -> setEmphasis(true);
-	 $printer -> text("PRODUCT NAME  |  PRICE \n");
+            /* Title of receipt */
+            $printer -> setJustification(Printer::JUSTIFY_RIGHT);
+            $printer -> text("\n");
+            $printer -> text($date . "\n");
+            $printer -> setJustification(Printer::JUSTIFY_LEFT);
+            $printer -> setEmphasis(true);
+            $printer -> text($printer->header."\n");
+            $printer -> text("\n");
 
-	 foreach($sales as $sale){
-            $printer -> text("--------------------------------\n");
-            $printer -> text($sale->name.' '.$sale->total. "\n") ;
-	   
+            /* Name of shop */
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text($printer->title."\n");
+            $printer -> selectPrintMode();
+            $printer -> text("\n");
+            $printer -> text($printer->address."\n");
+            $printer -> setEmphasis(false);
+            $printer -> text("\n");
+            $printer -> text("\n");
+            $printer -> setJustification(Printer::JUSTIFY_LEFT);
+            $printer -> setEmphasis(true);
+            $printer -> text("PRODUCT NAME  |  PRICE \n");
 
-         }
-	 $printer -> setEmphasis(false);
-	 $printer -> setJustification(Printer::JUSTIFY_RIGHT);
-	 $printer -> text("\n");
-	 $printer -> setEmphasis(true);
-         $printer -> text("--------------------------------\n");
-	 $printer -> text("Total = NGN ".$total);
-	 $printer -> setEmphasis(false);	
-	 $printer -> feed();
+            foreach($sales as $sale){
+                    $printer -> text("--------------------------------\n");
+                    $printer -> text($sale->name.' '.$sale->total. "\n") ;
+            
+
+                }
+            $printer -> setEmphasis(false);
+            $printer -> setJustification(Printer::JUSTIFY_RIGHT);
+            $printer -> text("\n");
+            $printer -> setEmphasis(true);
+                $printer -> text("--------------------------------\n");
+            $printer -> text("Total = NGN ".$total);
+            $printer -> setEmphasis(false);	
+            $printer -> feed();
 
 
-	 /* Footer */
-	 $printer -> feed(2);
-	 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-	 $printer -> text("Thank you for shopping at GPOWER FROZEN FOODS\n");
-	 //$printer -> text("For trading hours, please visit example.com\n");
-	 $printer -> feed(2);
-	 $printer -> text("\n");
-	 $printer -> text("\n");
+            /* Footer */
+            $printer -> feed(2);
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text($printer->footer."\n");
+            $printer -> feed(2);
+            $printer -> text("\n");
+            $printer -> text("\n");
 
-          $printer -> cut();
-          $printer -> close();
+            $printer -> cut();
+            $printer -> close();
+        }
 
-	foreach($sales as $sale){
+        foreach($sales as $sale){
             $sale->status = 1 ;
             $sale->save();
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success_msg' , 'Record saved successfully!');
     }
 
     public function changepassword(Request $request){
@@ -348,11 +328,18 @@ class HomeController extends Controller
    
 
     public function admincashier(){
-        $mode = 0;
         $sales = Sale::where('status' , 0)->orderby('id', 'desc')->get();
         $products = Product::orderby('name', 'asc')->get();
+        $summary['price'] = 0;
+	    $summary['quantity'] = 0;
+        $summary['total'] = 0;
+        foreach($sales as $sale){
+            $summary['price']+= $sale->price;
+            $summary['quantity']+= $sale->quantity;
+            $summary['total']+= $sale->total;
+        }
 
-        return view('cashier' , compact('sales' , 'products', 'mode')) ;
+        return view('cashier' , compact('sales' , 'products' , 'summary')) ;
     }
 
     

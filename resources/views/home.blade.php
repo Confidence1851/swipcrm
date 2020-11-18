@@ -12,24 +12,7 @@
   <div>
     <h4 class="mb-3 mb-md-0">Welcome {{ Auth::user()->name }}</h4>
   </div>
-  <div class="d-flex align-items-center flex-wrap text-nowrap">
-    <div class="input-group date datepicker dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex" id="dashboardDate">
-      <span class="input-group-addon bg-transparent"><i data-feather="calendar" class=" text-primary"></i></span>
-      <input type="text" class="form-control">
-    </div>
-    <button type="button" class="btn btn-outline-info btn-icon-text mr-2 d-none d-md-block">
-      <i class="btn-icon-prepend" data-feather="download"></i>
-      Import
-    </button>
-    <button type="button" class="btn btn-outline-primary btn-icon-text mr-2 mb-2 mb-md-0">
-      <i class="btn-icon-prepend" data-feather="printer"></i>
-      Print
-    </button>
-    <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-      <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-      Download Report
-    </button>
-  </div>
+  @include('fragments.sales_date_filter' , ['url' =>  route('home')])
 </div>
 
 <div class="row">
@@ -154,34 +137,39 @@
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h6 class="card-title">Products</h6>
-        <p class="card-description">Products Available</p>
+        <h6 class="card-title">Sales</h6>
+        <p class="card-description">Sales History</p>
         <div class="table-responsive">
           <table id="dataTableExample" class="table">
             <thead>
               <tr>
-                <th>Products Name</th>
-                <th>Product Price</th>
-                <th>Actions</th>
+                <th>Cashier</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>DateTime</th>
               </tr>
             </thead>
             <tbody>
+             @foreach ($sales as $sale)
               <tr>
-                <td>Tiger Nixon</td>
-                <td>System Architect</td>
-                <td>
-                  <a href="" class="btn btn-primary">Edit</a>
-                  <a href="" class="btn btn-danger ml-3">Delete</a>
-                </td>
-              </tr>  
-              <tr>
+                <td>{{ $sale->cashier->name ?? $sale->username }}</td>
+                <td>{{ $sale->name }}</td>
+                <td>₦{{ $sale->price }}</td>
+                <td>{{ $sale->quantity }}</td>
+                <td>₦{{ $sale->total }}</td>
+                <td>{{ date('Y-m-d h:i:A', strtotime($sale->created_at)) }}</td>
+              </tr> 
+             @endforeach 
+              {{-- <tr>
                 <td>Yuri Berry</td>
                 <td>Chief Marketing Officer (CMO)</td>
                 <td>
                   <a href="" class="btn btn-primary">Edit</a>
                   <a href="" class="btn btn-danger ml-3">Delete</a>
                 </td>
-              </tr>
+              </tr> --}}
             </tbody>
           </table>
         </div>
@@ -189,6 +177,7 @@
     </div>
   </div>
 </div>
+
 
 
 

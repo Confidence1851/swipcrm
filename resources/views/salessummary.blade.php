@@ -9,39 +9,68 @@
       <li class="breadcrumb-item active" aria-current="page">Sales Summary</li>
     </ol>
   </nav>
+
+
+  <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+      <h4 class="mb-3 mb-md-0"></h4>
+    </div>
+    @include('fragments.sales_date_filter' , ['url' => route('salesummary')])
+  </div>
   
-  <div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <h6 class="card-title">Sales Summary</h6>
-          <p class="card-description">Product Sold</p>
-          <div class="table-responsive">
-            <table id="dataTableExample" class="table">
-              <thead>
-                <tr>
-                  <th>Product Name</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Date</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td><a href="" class="btn btn-danger btn-sm">Delete</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Sales</h6>
+        <p class="card-description">Sales History</p>
+        <div class="table-responsive">
+          <table id="dataTableExample" class="table">
+            <thead>
+              <tr>
+                <th>Cashier</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>DateTime</th>
+              </tr>
+            </thead>
+            <tbody>
+             @foreach ($sales as $sale)
+              <tr>
+                <td>{{ $sale->cashier->name ?? $sale->username }}</td>
+                <td>{{ $sale->name }}</td>
+                <td>₦{{ $sale->price }}</td>
+                <td>{{ $sale->quantity }}</td>
+                <td>₦{{ $sale->total }}</td>
+                <td>{{ date('Y-m-d h:i:A', strtotime($sale->created_at)) }}</td>
+              </tr> 
+             @endforeach 
+            </tbody>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>₦{{ $summary['price'] }}</th>
+                <th>{{ $summary['quantity'] }}</th>
+                <th>₦{{ $summary['total'] }}</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
     </div>
   </div>
+  <div class="container text-center">
+   <div class="row">
+    {!! $sales->links() !!}
+   </div>
+  </div>
+</div>
+
 @endsection
 
 @push('plugin-scripts')

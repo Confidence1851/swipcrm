@@ -67,7 +67,7 @@
     <body>
             <div class="content">
                 <div class="title m-b-md" style="margin-top:100px;">
-                    Swipcrm v2.0
+                    Swip CRM System
                 </div>
                 <form action="{{ route('verify')}}" method="post">
                 {{ csrf_field()}}

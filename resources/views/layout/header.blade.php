@@ -5,7 +5,7 @@
         <a href="#" class="navbar-brand">
           Swip<span>CRM</span>
         </a>
-        <form class="search-form">
+        {{-- <form class="search-form">
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">
@@ -14,23 +14,23 @@
             </div>
             <input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
           </div>
-        </form>
+        </form> --}}
         <ul class="navbar-nav">
           <li class="nav-item dropdown nav-apps">
-            <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{-- <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i data-feather="grid"></i>
-            </a>
+            </a> --}}
             <div class="dropdown-menu" aria-labelledby="appsDropdown">
-              <div class="dropdown-header d-flex align-items-center justify-content-between">
+              {{-- <div class="dropdown-header d-flex align-items-center justify-content-between">
                 <p class="mb-0 font-weight-medium">Web Apps</p>
                 <a href="javascript:;" class="text-muted">Edit</a>
-              </div>
+              </div> --}}
               <div class="dropdown-body">
                 <div class="d-flex align-items-center apps">
-                  <a href="{{ url('/apps/chat') }}"><i data-feather="message-square" class="icon-lg"></i><p>Chat</p></a>
+                  {{-- <a href="{{ url('/apps/chat') }}"><i data-feather="message-square" class="icon-lg"></i><p>Chat</p></a>
                   <a href="{{ url('/apps/calendar') }}"><i data-feather="calendar" class="icon-lg"></i><p>Calendar</p></a>
-                  <a href="{{ url('/email/inbox') }}"><i data-feather="mail" class="icon-lg"></i><p>Email</p></a>
-                  <a href="{{ url('/general/profile') }}"><i data-feather="instagram" class="icon-lg"></i><p>Profile</p></a>
+                  <a href="{{ url('/email/inbox') }}"><i data-feather="mail" class="icon-lg"></i><p>Email</p></a> --}}
+                  <a href="#"><p>{{ auth()->user()->name }}</p></a>
                 </div>
               </div>
               <div class="dropdown-footer d-flex align-items-center justify-content-center">
@@ -38,7 +38,7 @@
               </div>
             </div>
           </li>
-          <li class="nav-item dropdown nav-messages">
+          <li class="nav-item dropdown nav-messages d-none">
             <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i data-feather="mail"></i>
             </a>
@@ -114,7 +114,7 @@
               </div>
             </div>
           </li>
-          <li class="nav-item dropdown nav-notifications">
+          <li class="nav-item dropdown nav-notifications d-none">
             <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i data-feather="bell"></i>
               <div class="indicator">
@@ -180,44 +180,30 @@
           </li>
           <li class="nav-item dropdown nav-profile">
             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="profile">
+              {{-- <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="profile"> --}}
+              {{ auth()->user()->name }}
             </a>
             <div class="dropdown-menu" aria-labelledby="profileDropdown">
               <div class="dropdown-header d-flex flex-column align-items-center">
-                <div class="figure mb-3">
-                  <img src="{{ url('https://via.placeholder.com/80x80') }}" alt="">
-                </div>
                 <div class="info text-center">
-                  <p class="name font-weight-bold mb-0">Amiah Burton</p>
-                  <p class="email text-muted mb-3">amiahburton@gmail.com</p>
+                  <p class="name font-weight-bold mb-0">{{ auth()->user()->name }}</p>
+                  <p class="email text-muted mb-3">{{ auth()->user()->username }}</p>
                 </div>
               </div>
               <div class="dropdown-body">
                 <ul class="profile-nav p-0 pt-3">
-                  <li class="nav-item">
-                    <a href="{{ url('/general/profile') }}" class="nav-link">
+                  {{-- <li class="nav-item">
+                    <a href="{{ route('') }}" class="nav-link">
                       <i data-feather="user"></i>
-                      <span>Profile</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="javascript:;" class="nav-link">
-                      <i data-feather="edit"></i>
                       <span>Edit Profile</span>
                     </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="javascript:;" class="nav-link">
-                      <i data-feather="repeat"></i>
-                      <span>Switch User</span>
-                    </a>
-                  </li>
+                  </li> --}}
                   <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link"
                             onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
+                            document.getElementById('logout-form').submit();" style="color:#00bf8f;">
                             <i data-feather="log-out"></i>
-                            <span>Log Out</span>
+                            <span >Log Out</span>
                     </a>
                   
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -253,7 +239,7 @@
         <li class="nav-item">
           <a href="{{ route('allusers')}}" class="nav-link">
             <i class="link-icon" data-feather="user"></i>
-            <span class="menu-title">Cashier</span>
+            <span class="menu-title">Users</span>
           </a>
         </li>
         </li>
@@ -266,7 +252,7 @@
           <div class="submenu">
             <ul class="submenu-item">
               <li class="category-heading">Products</li>
-              <li class="nav-item"><a class="nav-link " href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Products</a></li>
+              <li class="nav-item"><a class="nav-link " href="#" data-toggle="modal" data-target="#addProductModal" data-whatever="@mdo">Add Products</a></li>
               <li class="nav-item"><a href="/products" class="nav-link">View All Products</a></li>
             </ul>
           </div>
@@ -281,32 +267,4 @@
     </div>
   </nav>
 </div>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Product Name:</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Price:</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
+@include('fragments.add_edit_products_modal')
