@@ -41,7 +41,6 @@ class AppController extends Controller
         $mm = date("i", strtotime($now));
         $s = date("s", strtotime($now));
         $day = (( ($d * $m * $y) * ($d + $y)) + ($h * $mm * $s) ) * $s ;
-        // dd($day);
         if($key == $day){
             $count->status = 1;
             $count->save();

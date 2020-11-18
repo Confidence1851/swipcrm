@@ -77,15 +77,10 @@
                             </td>
                             @else
                             <td>
-                              <form action="{{ route('deleteuser' , $user->id) }}" method="post">{{ csrf_field() }}
-                                <a href="{{ route('edituser', $user->id) }}" class="btn btn-primary">Edit</a>
-                                <button class="btn btn-danger ml-3">Delete</button>
-                              </form>
                             </td>
                             @endif
                           </tr>
                           @endforeach
-                        </tbody>
                       </table>
                     </div>
                   </div> 
