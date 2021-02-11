@@ -21,3 +21,8 @@ function globalPrinter(PrinterConfig $printer = null){
 }
 
 // dd(phpinfo());
+
+
+function isAdmin(){
+   return auth()->user()->role == "admin";
+}

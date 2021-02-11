@@ -38,7 +38,6 @@
 <body data-base-url="{{url('/')}}" class="">
 <script src="{{asset($append_asset.'assets/js/spinner.js')}}"></script>
 
-
   <div class="main-wrapper" id="app">
     {{--  @include('admin.layout.sidebar')  --}}
     <div class="page-wrapper">

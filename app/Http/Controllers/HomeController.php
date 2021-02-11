@@ -39,6 +39,9 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+        if(isAdmin()){
+            return redirect()->route("admincashier");
+        }
         $from = $request->from ??  now()->addDays(-1);
         $to = $request->to ?? now();
         $sales = Sale::where('status', 1)->orderby('id', 'desc')->whereBetween('created_at', [$from, $to])->paginate(10);
