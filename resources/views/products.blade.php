@@ -24,7 +24,9 @@
                   <th>#</th>
                   <th>Products Name</th>
                   <th>Product Price</th>
+                  @if(isAdmin())
                   <th>Actions</th>
+                  @endif
                 </tr>
               </thead>
               <tbody>
@@ -35,6 +37,7 @@
                   <td>{{ $i }}</td>
                   <td>{{ $product->name }}</td>
                   <td>{{ $product->price }}</td>
+                  @if(isAdmin())
                   <td>
                     <form action="{{ route('deleteproduct' , $product->id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">{{ csrf_field() }}
                       <a href="" class="btn btn-primary"  data-toggle="modal" data-target="#editProductModal_{{ $product->id}}" >Edit</a>
@@ -42,6 +45,7 @@
                     </form>
                     @include('fragments.add_edit_products_modal' , ['product' => $product])
                   </td>
+                  @endif
                 </tr>  
                 @endforeach
               </tbody>

@@ -133,7 +133,9 @@
         <li class="nav-item">
           <a href="{{ route('admincashier')}}" class="nav-link">
             <i class="link-icon" data-feather="repeat"></i>
-            <span class="menu-title">Switch Mode</span>
+            <span class="menu-title">
+              Sell
+            </span>
           </a>
         </li>
       </ul>

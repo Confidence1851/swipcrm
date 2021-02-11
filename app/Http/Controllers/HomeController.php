@@ -39,7 +39,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
-        if(isAdmin()){
+        if(!isAdmin()){
             return redirect()->route("admincashier");
         }
         $from = $request->from ??  now()->addDays(-1);
