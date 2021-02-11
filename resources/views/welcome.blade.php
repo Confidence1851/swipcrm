@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>SwipCRM Activate Software</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@
                 color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
-                height: 100vh;
+                height: 80vh;
                 margin: 0;
             }
 
@@ -83,7 +83,7 @@
         </div>
         <footer>
          <div class="row">
-            <p style="margin-top:200px;float:right;"><b>{{$t}}</b></p>
+            <p style="margin-top:200px;float:right;margin-right:20px"><b>{{$t}}</b></p>
          </div>
         </footer>
     </body>

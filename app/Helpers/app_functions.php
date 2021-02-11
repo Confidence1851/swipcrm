@@ -20,3 +20,4 @@ function globalPrinter(PrinterConfig $printer = null){
     return $printer;
 }
 
+// dd(phpinfo());

@@ -24,8 +24,6 @@ class AppController extends Controller
     
     public function new(){
         $t = Active::first()->created_at;
-        
-        // dd($t);
         return view('welcome' , compact('t'));
     }
 

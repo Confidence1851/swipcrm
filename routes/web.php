@@ -16,20 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-
+Route::get('/welcome', 'AppController@new')->name('welcome');
+Route::post('/verify', 'AppController@verify')->name('verify');
 Route::middleware("check")->group(function () {
 
     Route::get('/', 'AppController@index');
-
-
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::post('/add-product', 'HomeController@addproduct')->name('addproduct');
     Route::get('/edit-product/{id}', 'HomeController@editproduct')->name('editproduct');
     Route::post('/save-product/{id}', 'HomeController@updateproduct')->name('updateproduct');
     Route::post('/delete-product/{id}', 'HomeController@deleteproduct')->name('deleteproduct');
-    Route::get('/welcome', 'AppController@new')->name('welcome');
-    Route::post('/verify', 'AppController@verify')->name('verify');
     Route::get('/all-users', 'HomeController@allusers')->name('allusers');
     Route::post('/add-user', 'HomeController@adduser')->name('adduser');
     Route::get('/edit-user/{id}', 'HomeController@edituser')->name('edituser');
