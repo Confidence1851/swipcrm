@@ -35,6 +35,7 @@
                 <th>Quantity</th>
                 <th>Total</th>
                 <th>DateTime</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -46,6 +47,9 @@
                 <td>{{ $sale->quantity }}</td>
                 <td>₦{{ $sale->total }}</td>
                 <td>{{ date('Y-m-d h:i:A', strtotime($sale->created_at)) }}</td>
+                <td>
+                  <a href="{{ route("printsale" , $sale->id) }}" class="bt btn-primary btn-sm">Print</a>
+                </td>
               </tr> 
              @endforeach 
             </tbody>

@@ -22,7 +22,7 @@
             }
 
             .full-height {
-                height: 100vh;
+                height: 95%;
             }
 
             .flex-center {
@@ -83,7 +83,7 @@
         </div>
         <footer>
          <div class="row">
-            <p style="margin-top:300px;float:right;"><b>{{$t}}</b></p>
+            <p style="margin-top:200px;float:right;"><b>{{$t}}</b></p>
          </div>
         </footer>
     </body>

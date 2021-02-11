@@ -7,26 +7,27 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
-
-    /**
      * Register any application services.
      *
      * @return void
      */
     public function register()
     {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
         view()->composer('*', function ($view) {
             $view->with([
-                "append_asset" => env("ASSET_URL"),
+                "append_asset" => env("RESOURCE_URL"),
             ]);
         });
     }
+
 }

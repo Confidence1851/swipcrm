@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Active;
+use App\Models\User;
+use App\Models\Active;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AppController extends Controller
 {
@@ -41,7 +41,6 @@ class AppController extends Controller
         $mm = date("i", strtotime($now));
         $s = date("s", strtotime($now));
         $day = (( ($d * $m * $y) * ($d + $y)) + ($h * $mm * $s) ) * $s ;
-        // dd($day);
         if($key == $day){
             $count->status = 1;
             $count->save();

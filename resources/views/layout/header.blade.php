@@ -192,12 +192,12 @@
               </div>
               <div class="dropdown-body">
                 <ul class="profile-nav p-0 pt-3">
-                  {{-- <li class="nav-item">
-                    <a href="{{ route('') }}" class="nav-link">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link" data-toggle="modal" data-target="#printer_setting_modal">
                       <i data-feather="user"></i>
-                      <span>Edit Profile</span>
+                      <span>Printer Settings</span>
                     </a>
-                  </li> --}}
+                  </li>
                   <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link"
                             onclick="event.preventDefault();
@@ -268,3 +268,4 @@
   </nav>
 </div>
 @include('fragments.add_edit_products_modal')
+@include("fragments.printer_setting_modal")

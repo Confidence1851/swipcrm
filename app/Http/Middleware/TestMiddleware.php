@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Active;
+use App\Models\User;
 use Closure;
-use App\Active;
 use Carbon\Carbon;
-use App\User;
 
 class TestMiddleware
 {

@@ -17,11 +17,11 @@ class CreatePrinterConfigsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('model');
-            $table->string('header');
-            $table->string('title');
-            $table->text('address');
-            $table->string('footer');
-            $table->string('status');
+            $table->string('header')->nullable();
+            $table->string('title')->nullable();
+            $table->text('address')->nullable();
+            $table->string('footer')->nullable();
+            $table->tinyInteger('print')->default(1);
             $table->timestamps();
         });
     }
